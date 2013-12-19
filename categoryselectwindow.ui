@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>CategorySelectWindow</class>
  <widget class="QDialog" name="CategorySelectWindow">
@@ -9,10 +10,15 @@
     <height>300</height>
    </rect>
   </property>
-  <layout class="QGridLayout" name="gridLayout"/>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QDialog {
+	border-image:url(:/images/theme16x9);
+}</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout"/>
  </widget>
  <resources/>
  <connections/>

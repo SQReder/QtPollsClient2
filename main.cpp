@@ -14,4 +14,5 @@ int main(int argc, char *argv[])
     CreateScannerWorkerThread();
 
     return a.exec();
+    ScanWorker::Instance()->StopCam();
 }

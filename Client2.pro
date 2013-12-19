@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     clicablelabel.cpp \
     category.cpp \
     categoryselectwindow.cpp \
-    categoriesrepository.cpp
+    categoriesrepository.cpp \
+    viewcategorydialog.cpp \
 
 HEADERS  += connectdialog.h \
     scanworker.h \
@@ -27,10 +28,12 @@ HEADERS  += connectdialog.h \
     clicablelabel.h \
     category.h \
     categoryselectwindow.h \
-    categoriesrepository.h
+    categoriesrepository.h \
+    viewcategorydialog.h \
 
 FORMS    += connectdialog.ui \
-    categoryselectwindow.ui
+    categoryselectwindow.ui \
+    viewcategorydialog.ui \
 
 #QMAKE_CXXFLAGS -= -O2
 QMAKE_CXXFLAGS += --std=c++11 #-O3
@@ -43,3 +46,6 @@ LIBS += -lopencv_highgui247.dll -lopencv_imgproc247.dll
 
 INCLUDEPATH += $$PWD/include
 INCLUDEPATH += c:\cv\opencv\build\include
+
+RESOURCES += \
+    resources.qrc

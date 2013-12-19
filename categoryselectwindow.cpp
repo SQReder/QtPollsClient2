@@ -11,6 +11,9 @@ CategorySelectWindow::CategorySelectWindow(QWidget *parent) :
     ui->setupUi(this);
     auto repo = CategoriesRepository::Instance();
     repo->loadCategoriesFromDir("pics");
+
+    viewCategoryDialog = QSharedPointer<ViewCategoryDialog>(new ViewCategoryDialog());
+    connect(this, SIGNAL(showCategory(Category::CategoryPtr)), viewCategoryDialog.data(), SLOT(onShowCategory(Category::CategoryPtr)));
 }
 
 CategorySelectWindow::~CategorySelectWindow()
@@ -50,5 +53,5 @@ void CategorySelectWindow::closeEvent(QCloseEvent *e) {
 void CategorySelectWindow::onCategoryLabelClicked(ClickableLabel *sender)
 {
     qDebug() << "clicked label for category " << _labelToCategory[sender]->Name();
-    emit OpenCategory(_labelToCategory[sender]);
+    emit showCategory(_labelToCategory[sender]);
 }

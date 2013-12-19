@@ -1,0 +1,5 @@
+<RCC>
+    <qresource lang="ru" prefix="/images">
+        <file alias="theme16x9">files/theme16х9.jpg</file>
+    </qresource>
+</RCC>

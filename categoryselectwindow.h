@@ -5,6 +5,7 @@
 #include <QMap>
 #include <clicablelabel.h>
 #include <categoriesrepository.h>
+#include <viewcategorydialog.h>
 
 namespace Ui {
 class CategorySelectWindow;
@@ -17,6 +18,7 @@ class CategorySelectWindow : public QDialog
     bool canBeClosed;
 
     QMap<ClickableLabel*, Category::CategoryPtr> _labelToCategory;
+    QSharedPointer<ViewCategoryDialog> viewCategoryDialog;
 public:
     explicit CategorySelectWindow(QWidget *parent = 0);
     ~CategorySelectWindow();
@@ -29,7 +31,7 @@ protected:
 private slots:
     void onCategoryLabelClicked(ClickableLabel *sender);
 signals:
-    void OpenCategory(Category::CategoryPtr);
+    void showCategory(Category::CategoryPtr);
 private:
 };
 

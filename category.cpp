@@ -27,14 +27,12 @@ CategoryImage::CategoryImagePtr CategoryImage::CreateFromFile(QString filename)
 
 
 QPixmap CategoryImage::Thumbnail(QSize thumbnailSize) const {
-    static QPixmap thumbnail;
-
-    if (thumbnail.isNull() || thumbnail.size() != thumbnailSize) {
-        thumbnail = _image.scaled(thumbnailSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    if (_thumbnail.isNull() || _thumbnail.size() != thumbnailSize) {
+        _thumbnail = _image.scaled(thumbnailSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
         qDebug() << "generate thumbnail for " << _name;
     }
 
-    return thumbnail;
+    return _thumbnail;
 }
 
 

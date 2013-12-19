@@ -9,6 +9,7 @@ class CategoryImage {
     CategoryImage();
 
     QPixmap _image;
+    mutable QPixmap _thumbnail;
     QString _name;
     QString _filename;
 public:

@@ -82,7 +82,7 @@ void ConnectDialog::on_pbSelectFolder_clicked()
     }
 }
 
-void ConnectDialog::done(int code) {
+void ConnectDialog::done(int) {
     ScanWorker::Instance()->StopCam();
     emit ScanWorker::Instance()->finished();
 
