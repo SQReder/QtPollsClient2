@@ -17,6 +17,8 @@ public:
     explicit CategorySelectWindow(QWidget *parent = 0);
     ~CategorySelectWindow();
 
+    void createCategorySelectors();
+
 protected:
     void closeEvent(QCloseEvent *);
 

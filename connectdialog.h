@@ -31,6 +31,7 @@ private slots:
     void on_pbConnect_toggled(bool checked);
 
     void on_pbSelectFolder_clicked();
+    void done(int);
 
 private:
     Ui::Dialog *ui;

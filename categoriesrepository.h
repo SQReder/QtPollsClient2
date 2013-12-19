@@ -9,11 +9,12 @@ class CategoriesRepository
 {
     CategoriesRepository();
 
-    QVector<Category> _categories;
+    QVector<Category::CategoryPtr> _categories;
 public:
-    static QSharedPointer<CategoriesRepository> Instance();
+    static CategoriesRepository *Instance();
 
     void loadCategoriesFromDir(QString root);
+    const QVector<Category::CategoryPtr> listCategories() const;
 };
 
 #endif // CATEGORIESREPOSITORY_H

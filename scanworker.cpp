@@ -117,7 +117,7 @@ void ScanWorker::decodeImage() {
     }
     catch (zxing::Exception& e)
     {
-        qDebug() << "Scanner error: " << e.what();
+//        qDebug() << "Scanner error: " << e.what();
     }
 }
 
@@ -160,7 +160,6 @@ void CreateScannerWorkerThread() {
         _worker->moveToThread(_scanThread);
         QObject::connect(_scanThread, SIGNAL(started()), _worker, SLOT(work()));
         QObject::connect(_worker, SIGNAL(finished()), _scanThread, SLOT(quit()));
-//        QObject::connect(_worker, SIGNAL(codeScanned(QString)), this, SLOT(onCodeScanned(QString)));
         _scanThread->start();
 
         _scanThreadInstance = QSharedPointer<QThread>(_scanThreadInstance);

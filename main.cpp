@@ -9,6 +9,8 @@ int main(int argc, char *argv[])
     ConnectDialog w;
     w.show();
 
+    a.connect(&w, SIGNAL(finished(int)), SLOT(quit()));
+
     CreateScannerWorkerThread();
 
     return a.exec();

@@ -10,12 +10,18 @@ CategorySelectWindow::CategorySelectWindow(QWidget *parent) :
     canBeClosed(false)
 {
     ui->setupUi(this);
-    CategoriesRepository::Instance()->loadCategoriesFromDir("pics");
+    auto repo = CategoriesRepository::Instance();
+    repo->loadCategoriesFromDir("pics");
 }
 
 CategorySelectWindow::~CategorySelectWindow()
 {
     delete ui;
+}
+
+void CategorySelectWindow::createCategorySelectors()
+{
+
 }
 
 void CategorySelectWindow::closeEvent(QCloseEvent *e) {

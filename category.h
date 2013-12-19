@@ -36,7 +36,7 @@ class Category
 public:
     typedef QSharedPointer<Category> CategoryPtr;
 
-    CategoryPtr CreateFromDir(QString path);
+    static CategoryPtr CreateFromDir(QString path);
 
     const QVector<CategoryImage::CategoryImagePtr> listImages() const;
     const CategoryImage::CategoryImagePtr getArt() const;

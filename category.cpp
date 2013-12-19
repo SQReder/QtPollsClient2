@@ -16,6 +16,8 @@ bool CategoryImage::isNull() const { return _image.isNull(); }
 
 CategoryImage::CategoryImagePtr CategoryImage::CreateFromFile(QString filename)
 {
+    qDebug() << "load image " << filename;
+
     auto image = CategoryImagePtr(new CategoryImage);
     image->_image = QPixmap(filename);
     image->_name = filename;
@@ -63,10 +65,10 @@ Category::CategoryPtr Category::CreateFromDir(QString path) {
     auto files = dir.entryInfoList(QDir::Files, QDir::Name);
     for (auto file = files.begin(); file != files.end(); ++file) {
         auto catImage = CategoryImage::CreateFromFile(file->absoluteFilePath());
-        _images.push_back(catImage);
+        category->_images.push_back(catImage);
     }
 
-    _art = _images.first();
+    category->_art = category->_images.first();
 
     return category;
 }

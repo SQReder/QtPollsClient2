@@ -55,6 +55,8 @@ void ConnectDialog::onAuthSuccess() {
         _categorySelectWindow->raise();
         _categorySelectWindow->showFullScreen();
 
+        this->connect(_categorySelectWindow, SIGNAL(finished(int)), SLOT(done(int)));
+
         this->hide();
     } catch (std::exception &e){
         emit onAddToLog(QString("") + QString(e.what()));
@@ -77,4 +79,11 @@ void ConnectDialog::on_pbSelectFolder_clicked()
         path = dialog.selectedFiles()[0];
         ui->lePicsPath->setText(path);
     }
+}
+
+void ConnectDialog::done(int code) {
+    ScanWorker::Instance()->StopCam();
+    emit ScanWorker::Instance()->finished();
+
+    exit(0);
 }
