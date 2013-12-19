@@ -27,7 +27,9 @@ protected:
     void closeEvent(QCloseEvent *);
 
 private slots:
-
+    void onCategoryLabelClicked(ClickableLabel *sender);
+signals:
+    void OpenCategory(Category::CategoryPtr);
 private:
 };
 

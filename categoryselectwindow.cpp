@@ -1,3 +1,4 @@
+#include <QDebug>
 #include <QCloseEvent>
 #include "categoryselectwindow.h"
 #include "ui_categoryselectwindow.h"
@@ -44,4 +45,10 @@ void CategorySelectWindow::createCategorySelectors()
 
 void CategorySelectWindow::closeEvent(QCloseEvent *e) {
     e->setAccepted(canBeClosed);
+}
+
+void CategorySelectWindow::onCategoryLabelClicked(ClickableLabel *sender)
+{
+    qDebug() << "clicked label for category " << _labelToCategory[sender]->Name();
+    emit OpenCategory(_labelToCategory[sender]);
 }
