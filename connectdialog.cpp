@@ -50,6 +50,7 @@ void ConnectDialog::on_pbConnect_toggled(bool checked)
 void ConnectDialog::onAuthSuccess() {
     try {
         _categorySelectWindow = new CategorySelectWindow(this);
+        _categorySelectWindow->createCategorySelectors();
 
 //        _categorySelectWindow->loadCategories(dirs);
         _categorySelectWindow->raise();
