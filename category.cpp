@@ -28,7 +28,7 @@ CategoryImage::CategoryImagePtr CategoryImage::CreateFromFile(QString filename)
 
 QPixmap CategoryImage::Thumbnail(QSize thumbnailSize) const {
     static QPixmap thumbnail;
-    
+
     if (thumbnail.isNull() || thumbnail.size() != thumbnailSize) {
         thumbnail = _image.scaled(thumbnailSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
         qDebug() << "generate thumbnail for " << _name;
@@ -51,6 +51,7 @@ const QString                                   Category::Name()        const { 
 
 
 Category::CategoryPtr Category::CreateFromDir(QString path) {
+    qDebug() << "create category from " << path;
     auto category = CategoryPtr(new Category);
     category->_name = path;
 

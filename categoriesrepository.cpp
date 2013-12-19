@@ -23,7 +23,7 @@ void CategoriesRepository::loadCategoriesFromDir(QString root)
     foreach(QFileInfo dirInfo, list) {
         if (dirInfo.fileName() == "." || dirInfo.fileName() == "..")
             continue;
-        auto category = Category::CreateFromDir(dirInfo.absolutePath());
+        auto category = Category::CreateFromDir(dirInfo.absoluteFilePath());
         _categories.push_back(category);
     }
 }
