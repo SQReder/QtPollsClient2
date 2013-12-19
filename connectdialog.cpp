@@ -12,7 +12,6 @@ QSharedPointer<QThread> ConnectDialog::_scanThread = QSharedPointer<QThread>();
 
 QString picsPath;
 
-
 ConnectDialog::ConnectDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Dialog)
@@ -20,18 +19,6 @@ ConnectDialog::ConnectDialog(QWidget *parent) :
     ui->setupUi(this);
     auto _client = ClientConnection::Instance();
     connect(_client.data(), SIGNAL(AuthSuccess()), this, SLOT(onAuthSuccess()));
-
-    _scanThread = QSharedPointer<QThread>(new QThread());
-    try {
-        _core = ScanWorker::Instance().data();
-        _core->moveToThread(_scanThread.data());
-        connect(_scanThread.data(), SIGNAL(started()), _core, SLOT(work()));
-        connect(_core, SIGNAL(finished()), _scanThread.data(), SLOT(quit()));
-        connect(_core, SIGNAL(codeScanned(QString)), this, SLOT(onCodeScanned(QString)));
-    } catch (std::exception &e) {
-        throw e;
-    }
-
 }
 
 ConnectDialog::~ConnectDialog()

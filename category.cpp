@@ -70,3 +70,6 @@ Category::CategoryPtr Category::CreateFromDir(QString path) {
 
     return category;
 }
+
+
+/* ========================================== */

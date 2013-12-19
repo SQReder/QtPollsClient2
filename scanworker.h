@@ -22,11 +22,10 @@ class ScanWorker: public QObject
     void UpdateFrame();
 
     explicit ScanWorker(QObject *parent = nullptr);
-    static QSharedPointer<ScanWorker> _instance;
 public:
     ~ScanWorker();
 
-    static QSharedPointer<ScanWorker> Instance();
+    static ScanWorker *Instance();
 
     bool SetupCam();
     void StopCam();
@@ -38,3 +37,5 @@ signals:
     void finished();
     void codeScanned(QString code);
 };
+
+void CreateScannerWorkerThread();

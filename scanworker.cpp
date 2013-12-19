@@ -1,5 +1,6 @@
 #include "scanworker.h"
 #include <QDebug>
+#include <QMessageBox>
 #include <exception>
 
 #include <zxing/ZXing.h>
@@ -14,9 +15,9 @@ using namespace std;
 using namespace zxing;
 using namespace qrcode;
 
-QSharedPointer<ScanWorker> ScanWorker::_instance = QSharedPointer<ScanWorker>();
 
 typedef CvCapture *TDevice;
+
 
 class OpenCVBitmapSource : public LuminanceSource
 {
@@ -70,10 +71,9 @@ ScanWorker::~ScanWorker() {
     StopCam();
 }
 
-QSharedPointer<ScanWorker> ScanWorker::Instance()
+ScanWorker *ScanWorker::Instance()
 {
-    if (_instance.isNull())
-        _instance = QSharedPointer<ScanWorker>(new ScanWorker());
+    static auto _instance = new ScanWorker();
     return _instance;
 }
 
@@ -149,4 +149,25 @@ void ScanWorker::UpdateFrame() {
 #ifdef SHOW_CV_WINDOW
     cvShowImage("Barcode Reader", gray);
 #endif
+}
+
+
+void CreateScannerWorkerThread() {
+    static auto _scanThreadInstance = QSharedPointer<QThread>();
+    try {
+        auto _scanThread = new QThread();
+        auto _worker = ScanWorker::Instance();
+        _worker->moveToThread(_scanThread);
+        QObject::connect(_scanThread, SIGNAL(started()), _worker, SLOT(work()));
+        QObject::connect(_worker, SIGNAL(finished()), _scanThread, SLOT(quit()));
+//        QObject::connect(_worker, SIGNAL(codeScanned(QString)), this, SLOT(onCodeScanned(QString)));
+        _scanThread->start();
+
+        _scanThreadInstance = QSharedPointer<QThread>(_scanThreadInstance);
+    } catch (std::exception &e) {
+        QMessageBox msgBox;
+        msgBox.setText(QString("Fatal error: cannot start scanner. Message: ") + e.what());
+        msgBox.exec();
+        exit(1);
+    }
 }
