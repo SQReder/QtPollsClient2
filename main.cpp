@@ -1,6 +1,7 @@
 #include <QApplication>
 #include "connectdialog.h"
 #include "scanworker.h"
+#include <QMessageBox>
 
 int main(int argc, char *argv[])
 {
@@ -9,10 +10,14 @@ int main(int argc, char *argv[])
     ConnectDialog w;
     w.show();
 
-    a.connect(&w, SIGNAL(finished(int)), SLOT(quit()));
-
     CreateScannerWorkerThread();
 
-    return a.exec();
-    ScanWorker::Instance()->StopCam();
+    try {
+        return a.exec();
+    } catch (std::exception &e) {
+        QMessageBox msgBox;
+        msgBox.setText(QString("Fatal error: ") + e.what());
+        msgBox.exec();
+        ScanWorker::Instance()->StopCam();
+    }
 }
