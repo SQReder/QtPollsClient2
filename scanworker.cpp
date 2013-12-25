@@ -1,5 +1,6 @@
 #include "scanworker.h"
 #include <QDebug>
+#include <vector>
 #include <QMessageBox>
 #include <exception>
 
@@ -9,7 +10,7 @@
 #include <zxing/DecodeHints.h>
 #include <zxing/LuminanceSource.h>
 
-#define SHOW_CV_WINDOW
+//#define SHOW_CV_WINDOW
 
 using namespace std;
 using namespace zxing;
@@ -46,8 +47,10 @@ public:
         char *matrix = new char[getWidth() * getHeight()];
         for (int y = 0; y < getHeight(); y++)
             memcpy(matrix + y * getWidth(), m_pImage->imageData + y * m_pImage->widthStep, getWidth());
+        auto retval = ArrayRef<char>(matrix, getWidth() * getHeight());
+        delete[] matrix;
 
-        return ArrayRef<char>(matrix, getWidth() * getHeight());
+        return retval;
     }
 };
 
