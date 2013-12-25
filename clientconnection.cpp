@@ -9,8 +9,6 @@ QSharedPointer<ClientConnection> ClientConnection::_instance = QSharedPointer<Cl
 ClientConnection::ClientConnection(QObject *parent) :
     QObject(parent)
 {
-    connect(this, SIGNAL(AddToLog(QString, QColor)), parent, SLOT(onAddToLog(QString)));
-
     _sok = new QTcpSocket(this);
     connect(_sok, SIGNAL(readyRead()), this, SLOT(onSokReadyRead()));
     connect(_sok, SIGNAL(connected()), this, SLOT(onSokConnected()));

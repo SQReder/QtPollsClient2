@@ -6,22 +6,31 @@ CategoryImage::CategoryImage()
 { }
 
 
-QString CategoryImage::name()       const { return _name; }
+QPixmap CategoryImage::getImage(QSize size) const {
+    if (!cache.contains(size))
+        cache.insert(size,
+                     _image.scaled(size, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+
+    return cache[size];
+}
+
+QString CategoryImage::category()   const { return _category; }
 QString CategoryImage::filename()   const { return _filename; }
-QPixmap CategoryImage::getImage()   const { return _image; }
+QString CategoryImage::name()       const { return _name; }
 
 
 bool CategoryImage::isNull() const { return _image.isNull(); }
 
 
-CategoryImage::CategoryImagePtr CategoryImage::CreateFromFile(QString filename)
+CategoryImage::CategoryImagePtr CategoryImage::CreateFromFile(QString filename, QString category, QString name)
 {
     qDebug() << "load image " << filename;
 
     auto image = CategoryImagePtr(new CategoryImage);
     image->_image = QPixmap(filename);
-    image->_name = filename;
+    image->_name = name;
     image->_filename = filename;
+    image->_category = category;
     return image;
 }
 
@@ -63,14 +72,19 @@ Category::CategoryPtr Category::CreateFromDir(QString path) {
 
     auto files = dir.entryInfoList(QDir::Files, QDir::Name);
     for (auto file = files.begin(); file != files.end(); ++file) {
-        auto catImage = CategoryImage::CreateFromFile(file->absoluteFilePath());
+        auto catImage = CategoryImage::CreateFromFile(file->absoluteFilePath(), category->Name(), file->baseName());
         category->_images.push_back(catImage);
     }
 
-    category->_art = category->_images.first();
+    if (category->_images.count())
+        category->_art = category->_images.first();
 
     return category;
 }
 
 
 /* ========================================== */
+
+uint qHash(const QSize& s, uint seed) {
+    return s.height() ^ s.width() ^ seed;
+}

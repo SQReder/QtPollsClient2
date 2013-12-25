@@ -3,7 +3,10 @@
 
 #include <QPixmap>
 #include <QVector>
+#include <QHash>
 #include <QSharedPointer>
+
+uint qHash(const QSize& s, uint seed = 0);
 
 class CategoryImage {
     CategoryImage();
@@ -12,17 +15,21 @@ class CategoryImage {
     mutable QPixmap _thumbnail;
     QString _name;
     QString _filename;
+    QString _category;
+    mutable QHash<QSize, QPixmap> cache;
+
 public:
     typedef QSharedPointer<CategoryImage> CategoryImagePtr;
 
-    static CategoryImagePtr CreateFromFile(QString filename);
+    static CategoryImagePtr CreateFromFile(QString filename, QString category, QString name);
 
     QPixmap Thumbnail(QSize thumbnailSize) const;
     bool isNull() const;
 
-    QPixmap getImage() const;
+    QPixmap getImage(QSize size) const;
     QString filename() const;
     QString name() const;
+    QString category() const;
 };
 
 

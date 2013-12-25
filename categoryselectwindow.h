@@ -26,7 +26,6 @@ public:
     void createCategorySelectors();
 
 protected:
-    void closeEvent(QCloseEvent *);
 
 private slots:
     void onCategoryLabelClicked(ClickableLabel *sender);

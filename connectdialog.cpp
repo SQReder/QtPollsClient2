@@ -7,8 +7,6 @@
 #include <QMessageBox>
 #include <QFileDialog>
 
-ScanWorker *ConnectDialog::_core = nullptr;
-QSharedPointer<QThread> ConnectDialog::_scanThread = QSharedPointer<QThread>();
 
 QString picsPath;
 
@@ -19,6 +17,7 @@ ConnectDialog::ConnectDialog(QWidget *parent) :
     ui->setupUi(this);
     auto _client = ClientConnection::Instance();
     connect(_client.data(), SIGNAL(AuthSuccess()), this, SLOT(onAuthSuccess()));
+    connect(_client.data(), SIGNAL(AddToLog(QString, QColor)), this, SLOT(onAddToLog(QString)));
 }
 
 ConnectDialog::~ConnectDialog()
@@ -52,11 +51,8 @@ void ConnectDialog::onAuthSuccess() {
         _categorySelectWindow = new CategorySelectWindow(this);
         _categorySelectWindow->createCategorySelectors();
 
-//        _categorySelectWindow->loadCategories(dirs);
         _categorySelectWindow->raise();
         _categorySelectWindow->showFullScreen();
-
-        this->connect(_categorySelectWindow, SIGNAL(finished(int)), SLOT(done(int)));
 
         this->hide();
     } catch (std::exception &e){
@@ -80,11 +76,4 @@ void ConnectDialog::on_pbSelectFolder_clicked()
         path = dialog.selectedFiles()[0];
         ui->lePicsPath->setText(path);
     }
-}
-
-void ConnectDialog::done(int) {
-    ScanWorker::Instance()->StopCam();
-    emit ScanWorker::Instance()->finished();
-
-    exit(0);
 }

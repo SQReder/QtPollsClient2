@@ -21,6 +21,7 @@ SOURCES += main.cpp\
     categoryselectwindow.cpp \
     categoriesrepository.cpp \
     viewcategorydialog.cpp \
+    votedialog.cpp
 
 HEADERS  += connectdialog.h \
     scanworker.h \
@@ -30,10 +31,12 @@ HEADERS  += connectdialog.h \
     categoryselectwindow.h \
     categoriesrepository.h \
     viewcategorydialog.h \
+    votedialog.h
 
 FORMS    += connectdialog.ui \
     categoryselectwindow.ui \
     viewcategorydialog.ui \
+    votedialog.ui
 
 #QMAKE_CXXFLAGS -= -O2
 QMAKE_CXXFLAGS += --std=c++11 #-O3

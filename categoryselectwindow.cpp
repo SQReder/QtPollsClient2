@@ -23,12 +23,12 @@ CategorySelectWindow::~CategorySelectWindow()
 
 void CategorySelectWindow::createCategorySelectors()
 {
-    QSize thumbnailSize(256,256);
+    QSize thumbnailSize(500,300);
     QVector<ClickableLabel*> labels;
     auto categories = CategoriesRepository::Instance()->listCategories();
     foreach (Category::CategoryPtr category, categories) {
         auto art = category->getArt();
-        auto artThumb = art->Thumbnail(thumbnailSize);
+        auto artThumb = art->getImage(thumbnailSize);
 
         auto label = new ClickableLabel();
 
@@ -42,12 +42,8 @@ void CategorySelectWindow::createCategorySelectors()
     }
 
     for(int i = 0; i != labels.size(); ++i) {
-        ui->gridLayout->addWidget(labels[i], i / 5, i % 5);
+        ui->gridLayout->addWidget(labels[i], i / 2, i % 2);
     }
-}
-
-void CategorySelectWindow::closeEvent(QCloseEvent *e) {
-    e->setAccepted(canBeClosed);
 }
 
 void CategorySelectWindow::onCategoryLabelClicked(ClickableLabel *sender)
