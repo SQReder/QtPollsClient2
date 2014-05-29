@@ -8,7 +8,7 @@ QT       += core gui network multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = Client2
+TARGET = PollClient
 TEMPLATE = app
 
 
@@ -43,12 +43,11 @@ QMAKE_CXXFLAGS += #-O3
 
 
 LIBS += -L$$PWD/lib/ -lzxing
-LIBS += -Lc:\cv\opencv\build\x86\mingw\lib
-LIBS += -lopencv_core247.dll
-LIBS += -lopencv_highgui247.dll -lopencv_imgproc247.dll
+LIBS += -Lc:\opencv\build\x86\mingw\lib
+LIBS += -lopencv_core249.dll -lopencv_highgui249.dll -lopencv_imgproc249.dll
 
 INCLUDEPATH += $$PWD/include
-INCLUDEPATH += c:\cv\opencv\build\include
+INCLUDEPATH += C:\opencv\build\include
 
 RESOURCES += \
     resources.qrc

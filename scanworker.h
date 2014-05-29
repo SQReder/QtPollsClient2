@@ -1,9 +1,16 @@
 #pragma once
 
+
 #include <QtCore>
 #include <opencv2/opencv.hpp>
 #include <opencv2/highgui/highgui.hpp>
+#ifndef _WIN32
 #include <zxing/qrcode/QRCodeReader.h>
+#else
+#undef _WIN32
+#include <zxing/qrcode/QRCodeReader.h>
+#define _WIN32
+#endif
 
 typedef CvCapture *TDevice;
 
