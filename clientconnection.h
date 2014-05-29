@@ -24,7 +24,6 @@ public:
     void ValidateCode(QByteArray code);
 signals:
     void AuthSuccess();
-    void AddToLog(QString message, QColor color);
     void CodeVerified();
     void CodeNotVerified();
     void CodeAlreadyUsed();

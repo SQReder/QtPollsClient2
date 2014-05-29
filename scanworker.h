@@ -35,6 +35,7 @@ public:
     static ScanWorker *Instance();
 
     bool SetupCam();
+    void StartCam();
     void StopCam();
 
 public slots:

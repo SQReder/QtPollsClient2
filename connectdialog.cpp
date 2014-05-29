@@ -2,10 +2,12 @@
 #include "categoryselectwindow.h"
 #include "ui_connectdialog.h"
 
+
 #include <QtGui>
 #include <QDebug>
 #include <QMessageBox>
 #include <QFileDialog>
+#include "../Server/logger.h"
 
 
 QString picsPath;
@@ -17,7 +19,8 @@ ConnectDialog::ConnectDialog(QWidget *parent) :
     ui->setupUi(this);
     auto _client = ClientConnection::Instance();
     connect(_client.data(), SIGNAL(AuthSuccess()), this, SLOT(onAuthSuccess()));
-    connect(_client.data(), SIGNAL(AddToLog(QString, QColor)), this, SLOT(onAddToLog(QString)));
+
+    Logger::assignList(ui->lwLog);
 }
 
 ConnectDialog::~ConnectDialog()
@@ -30,7 +33,7 @@ void ConnectDialog::on_pbConnect_toggled(bool checked)
     auto client = ClientConnection::Instance();
     if (checked) {
         if (ui->lePicsPath->text() == "") {
-            onAddToLog("Select folder with pics", Qt::darkRed);
+            Logger::error("Select folder with pics");
             return;
         }
 
@@ -48,22 +51,21 @@ void ConnectDialog::on_pbConnect_toggled(bool checked)
 
 void ConnectDialog::onAuthSuccess() {
     try {
+        CreateScannerWorkerThread();
+
         _categorySelectWindow = new CategorySelectWindow(this);
         _categorySelectWindow->createCategorySelectors();
+
+        _categorySelectWindow->show();
+        qDebug() << _categorySelectWindow->pos() << _categorySelectWindow->size();
 
         _categorySelectWindow->raise();
         _categorySelectWindow->showFullScreen();
 
         this->hide();
     } catch (std::exception &e){
-        emit onAddToLog(QString("") + QString(e.what()));
+        Logger::error(QString(e.what()));
     }
-}
-
-void ConnectDialog::onAddToLog(QString text, QColor color)
-{
-    ui->lwLog->insertItem(0, QTime::currentTime().toString()+" "+text);
-    ui->lwLog->item(0)->setTextColor(color);
 }
 
 void ConnectDialog::on_pbSelectFolder_clicked()

@@ -80,8 +80,8 @@ Category::CategoryPtr Category::CreateFromDir(QString path) {
             category->_images.push_back(catImage);
     }
 
-//    if (category->_images.count())
-//        category->_art = category->_images.first();
+    if (category->_art.isNull())
+        category->_art = category->_images.first();
 
     return category;
 }

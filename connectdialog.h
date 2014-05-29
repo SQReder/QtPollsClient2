@@ -24,9 +24,6 @@ public:
     static QSharedPointer<QThread> _scanThread;
     static ScanWorker* _core;
 
-public slots:
-    void onAddToLog(QString text, QColor color = Qt::black);
-
 private slots:
     void onAuthSuccess();
     void on_pbConnect_toggled(bool checked);

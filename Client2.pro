@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     categoryselectwindow.cpp \
     categoriesrepository.cpp \
     viewcategorydialog.cpp \
-    votedialog.cpp
+    votedialog.cpp \
+    ../Server/logger.cpp
 
 HEADERS  += connectdialog.h \
     scanworker.h \
@@ -31,7 +32,8 @@ HEADERS  += connectdialog.h \
     categoryselectwindow.h \
     categoriesrepository.h \
     viewcategorydialog.h \
-    votedialog.h
+    votedialog.h \
+    ../Server/logger.h
 
 FORMS    += connectdialog.ui \
     categoryselectwindow.ui \

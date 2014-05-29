@@ -3,6 +3,7 @@
 
 #include "clientconnection.h"
 #include "../Server/protocol.h"
+#include "../Server/logger.h"
 
 QSharedPointer<ClientConnection> ClientConnection::_instance = QSharedPointer<ClientConnection>();
 
@@ -28,23 +29,23 @@ void ClientConnection::onSokDisplayError(QAbstractSocket::SocketError socketErro
 {
     switch (socketError) {
     case QAbstractSocket::RemoteHostClosedError:
-        emit AddToLog("Remote host closed", Qt::darkRed);
+        Logger::error("Remote host closed");
         break;
     case QAbstractSocket::HostNotFoundError:
-        emit AddToLog("The host was not found", Qt::darkRed);
+        Logger::error("The host was not found");
         break;
     case QAbstractSocket::ConnectionRefusedError:
-        emit AddToLog("The connection was refused by the peer.", Qt::darkRed);
+        Logger::error("The connection was refused by the peer.");
         break;
     default:
-        emit AddToLog("The following error occurred: "+_sok->errorString(), Qt::darkRed);
+        Logger::error("The following error occurred: "+_sok->errorString());
     }
 }
 
 void ClientConnection::onSokConnected()
 {
     _blockSize = 0;
-    AddToLog("Connected to"+_sok->peerAddress().toString()+":"+QString::number(_sok->peerPort()),Qt::darkGreen);
+    Logger::success("Connected to"+_sok->peerAddress().toString()+":"+QString::number(_sok->peerPort()));
 
     //try autch
     doSendCommand(ProtocolCommand::comAuthRequest);
@@ -52,7 +53,7 @@ void ClientConnection::onSokConnected()
 
 void ClientConnection::onSokDisconnected()
 {
-    AddToLog("Disconnected from"+_sok->peerAddress().toString()+":"+QString::number(_sok->peerPort()), Qt::darkGreen);
+    Logger::success("Disconnected from"+_sok->peerAddress().toString()+":"+QString::number(_sok->peerPort()));
 }
 
 void ClientConnection::onSokReadyRead() {

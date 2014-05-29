@@ -58,16 +58,7 @@ public:
 ScanWorker::ScanWorker(QObject *parent):
     QObject(parent)
 {
-    if(!SetupCam())
-        throw Exception("Error setup camera");
-
-    gray = cvCreateImage(cvSize(width, height), IPL_DEPTH_8U, 1);
-    if (!gray)
-        throw Exception("ERROR: allocating cv image");
-
-#ifdef SHOW_CV_WINDOW
-    cvNamedWindow("Barcode Reader", CV_WINDOW_AUTOSIZE);
-#endif
+    StartCam();
 }
 
 ScanWorker::~ScanWorker() {
@@ -106,6 +97,20 @@ bool ScanWorker::SetupCam() {
     width  = frame->width;
     height = frame->height;
     return true;
+}
+
+void ScanWorker::StartCam()
+{
+    if(!SetupCam())
+        throw Exception("Error setup camera");
+
+    gray = cvCreateImage(cvSize(width, height), IPL_DEPTH_8U, 1);
+    if (!gray)
+        throw Exception("ERROR: allocating cv image");
+
+#ifdef SHOW_CV_WINDOW
+    cvNamedWindow("Barcode Reader", CV_WINDOW_AUTOSIZE);
+#endif
 }
 
 

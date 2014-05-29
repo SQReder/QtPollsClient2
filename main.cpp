@@ -7,12 +7,9 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    ConnectDialog w;
-    w.show();
+    ConnectDialog dialog;
+    dialog.show();
 
-
-    CreateScannerWorkerThread();
-    QObject::connect(&a, SIGNAL(aboutToQuit()), ScanWorker::Instance(), SLOT(EndWork()));
 
     try {
         return a.exec();
