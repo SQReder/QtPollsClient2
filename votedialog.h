@@ -2,6 +2,7 @@
 #define VOTEDIALOG_H
 
 #include <QDialog>
+#include <QMainWindow>
 #include <category.h>
 
 namespace Ui {
@@ -28,7 +29,9 @@ private:
 
 public slots:
     void onShowVoteDialog(CategoryImage::CategoryImagePtr image);
+
 private slots:
+
     void on_pbBack_clicked();
 
     void onCodeScanned(QString code);
@@ -37,6 +40,9 @@ private slots:
     void onWrongCode();
 
     void onTimerStop();
+
+signals:
+    void ThisHides();
 };
 
 #endif // VOTEDIALOG_H

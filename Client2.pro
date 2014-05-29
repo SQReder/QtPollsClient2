@@ -39,7 +39,7 @@ FORMS    += connectdialog.ui \
     votedialog.ui
 
 #QMAKE_CXXFLAGS -= -O2
-QMAKE_CXXFLAGS += --std=c++11 #-O3
+QMAKE_CXXFLAGS += #-O3
 
 
 LIBS += -L$$PWD/lib/ -lzxing
@@ -52,3 +52,5 @@ INCLUDEPATH += c:\cv\opencv\build\include
 
 RESOURCES += \
     resources.qrc
+
+CONFIG += c++11

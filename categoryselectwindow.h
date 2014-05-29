@@ -11,7 +11,7 @@ namespace Ui {
 class CategorySelectWindow;
 }
 
-class CategorySelectWindow : public QDialog
+class CategorySelectWindow : public QWidget
 {
     Q_OBJECT
     Ui::CategorySelectWindow *ui;
@@ -26,11 +26,10 @@ public:
     void createCategorySelectors();
 
 protected:
-
 private slots:
     void onCategoryLabelClicked(ClickableLabel *sender);
 signals:
-    void showCategory(Category::CategoryPtr);
+    void showCategory(Category::CategoryPtr, bool hideExitButton);
 private:
 };
 

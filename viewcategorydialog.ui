@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>ViewCategoryDialog</class>
- <widget class="QDialog" name="ViewCategoryDialog">
+ <widget class="QWidget" name="ViewCategoryDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>492</width>
+    <width>542</width>
     <height>328</height>
    </rect>
   </property>
@@ -14,11 +14,11 @@
    <string>Dialog</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QDialog {
+   <string notr="true">QWidget#ViewCategoryDialog {
           border-image:url(:/images/theme16x9);
           width: 100px;
           border: none;
-}T</string>
+}</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <property name="leftMargin">
@@ -70,7 +70,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>462</width>
+        <width>512</width>
         <height>225</height>
        </rect>
       </property>

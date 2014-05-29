@@ -12,11 +12,11 @@ namespace Ui {
 class ViewCategoryDialog;
 }
 
-class ViewCategoryDialog : public QDialog
+class ViewCategoryDialog : public QWidget
 {
     Q_OBJECT
 
-    QVector<QSharedPointer<ClickableLabel>> _labels;
+    QVector<QSharedPointer<ClickableLabel>> _labels, _textLables;
     QMap<ClickableLabel*, CategoryImage::CategoryImagePtr> _labelToImage;
 
     QSharedPointer<VoteDialog> _voteDialog;
@@ -26,14 +26,20 @@ public:
 
 private:
     Ui::ViewCategoryDialog *ui;
+    bool exitOnClose;
+
+protected:
+    void closeEvent(QCloseEvent *);
 
 signals:
     void showVoteDialog(CategoryImage::CategoryImagePtr);
 public slots:
-    void onShowCategory(Category::CategoryPtr category);
+    void onShowCategory(Category::CategoryPtr category, bool hideBackButton);
+    void OnVoteDialogClosed();
+
 private slots:
     virtual void showEvent(QShowEvent *);
-    virtual void resizeEvent(QResizeEvent *e);
+    virtual void resizeEvent(QResizeEvent *);
     void on_pbBack_clicked();
     void onImageLabelClicked(ClickableLabel*sender);
     void onCodeVerified();

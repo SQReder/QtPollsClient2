@@ -36,7 +36,7 @@ public:
     int getWidth() const { return m_pImage->width; }
     int getHeight() const { return m_pImage->height; }
 
-    ArrayRef<char> getRow(int y, ArrayRef<char> row) const
+    ArrayRef<char> getRow(int y, ArrayRef<char>) const
     {
         int offset = y * m_pImage->widthStep;
         return ArrayRef<char>(m_pImage->imageData + offset, getWidth());
@@ -85,6 +85,11 @@ void ScanWorker::work() {
         UpdateFrame();
         decodeImage();
     }
+}
+
+void ScanWorker::EndWork()
+{
+    StopCam();
 }
 
 

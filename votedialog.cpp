@@ -30,6 +30,8 @@ void VoteDialog::ShowStatus()
     switch(status) {
     case vsAccepted:
         ui->lblVoteStatus->setText("<html><head/><body><p style=\"color:#008000;\">Спасибо, Ваш голос принят</p></body></html>");
+        ui->graphics->hide();
+        ui->pbBack->hide();
         break;
     case vsCodeUSed:
         ui->lblVoteStatus->setText("<html><head/><body><p style=\" font-weight:600; color:#bf0000;\">Этот код уже использован для голосования в этой категории</p></body></html>");
@@ -42,13 +44,25 @@ void VoteDialog::ShowStatus()
 
     this->move(QPoint(0,0));
 
-    ui->lblVoteStatus->setVisible(true);
+    ui->lblVoteStatus->show();
 
     QTimer* timer = new QTimer(this);
     this->connect(timer, SIGNAL(timeout()), SLOT(onTimerStop()));
-    timer->setInterval(6000);
+    //    timer->setInterval(5000);
     timer->setSingleShot(true);
-    timer->start();
+    timer->start(5000);
+}
+
+void VoteDialog::onTimerStop()
+{
+    ui->lblVoteStatus->hide();
+    ui->graphics->show();
+    ui->pbBack->show();
+
+    if (status == vsAccepted) {
+        emit ThisHides();
+        this->close();
+    }
 }
 
 void VoteDialog::onShowVoteDialog(CategoryImage::CategoryImagePtr image)
@@ -56,17 +70,19 @@ void VoteDialog::onShowVoteDialog(CategoryImage::CategoryImagePtr image)
     _currentImage = image;
     auto thumb = image->getImage(ui->graphics->geometry().size());
     ui->lblTitle->setText(image->name());
+    ui->graphics->setPixmap(thumb);
+    ui->graphics->show();
+    ui->lblVoteStatus->setVisible(false);
+
     this->showFullScreen();
     this->raise();
-    ui->graphics->setPixmap(thumb);
-
-    ui->lblVoteStatus->setVisible(false);
 
     _waitForCode = true;
 }
 
 void VoteDialog::on_pbBack_clicked()
 {
+    emit ThisHides();
     this->hide();
 }
 
@@ -103,12 +119,5 @@ void VoteDialog::onWrongCode()
     _waitForCode = true;
     status = vsWrong;
     ShowStatus();
-}
-
-void VoteDialog::onTimerStop()
-{
-    ui->lblVoteStatus->setVisible(false);
-    if (status == vsAccepted)
-        this->hide();
 }
 

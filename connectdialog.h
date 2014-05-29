@@ -2,6 +2,7 @@
 #define DIALOG_H
 
 #include <QDialog>
+#include <QMainWindow>
 #include <QTcpSocket>
 #include <QHostAddress>
 
@@ -13,7 +14,7 @@ namespace Ui {
 class Dialog;
 }
 
-class ConnectDialog : public QDialog
+class ConnectDialog : public QWidget
 {
     Q_OBJECT
 

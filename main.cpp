@@ -10,7 +10,9 @@ int main(int argc, char *argv[])
     ConnectDialog w;
     w.show();
 
+
     CreateScannerWorkerThread();
+    QObject::connect(&a, SIGNAL(aboutToQuit()), ScanWorker::Instance(), SLOT(EndWork()));
 
     try {
         return a.exec();
@@ -20,4 +22,6 @@ int main(int argc, char *argv[])
         msgBox.exec();
         ScanWorker::Instance()->StopCam();
     }
+
+    return 0;
 }

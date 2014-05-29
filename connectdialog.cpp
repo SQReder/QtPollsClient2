@@ -11,7 +11,7 @@
 QString picsPath;
 
 ConnectDialog::ConnectDialog(QWidget *parent) :
-    QDialog(parent),
+    QWidget(parent),
     ui(new Ui::Dialog)
 {
     ui->setupUi(this);

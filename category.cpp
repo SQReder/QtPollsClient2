@@ -59,10 +59,11 @@ const QString                                   Category::Name()        const { 
 
 Category::CategoryPtr Category::CreateFromDir(QString path) {
     qDebug() << "create category from " << path;
-    auto category = CategoryPtr(new Category);
-    category->_name = path;
-
     auto dir = QDir(path);
+
+    auto category = CategoryPtr(new Category);
+    category->_name = dir.dirName();
+
     QStringList filters;
     filters << "*.jpg" << "*.png";
     dir.setNameFilters(filters);
@@ -73,11 +74,14 @@ Category::CategoryPtr Category::CreateFromDir(QString path) {
     auto files = dir.entryInfoList(QDir::Files, QDir::Name);
     for (auto file = files.begin(); file != files.end(); ++file) {
         auto catImage = CategoryImage::CreateFromFile(file->absoluteFilePath(), category->Name(), file->baseName());
-        category->_images.push_back(catImage);
+        if (file->baseName() == "Thumb")
+            category->_art = catImage;
+        else
+            category->_images.push_back(catImage);
     }
 
-    if (category->_images.count())
-        category->_art = category->_images.first();
+//    if (category->_images.count())
+//        category->_art = category->_images.first();
 
     return category;
 }

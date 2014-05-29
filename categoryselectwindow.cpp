@@ -4,7 +4,7 @@
 #include "ui_categoryselectwindow.h"
 
 CategorySelectWindow::CategorySelectWindow(QWidget *parent) :
-    QDialog(parent),
+    QWidget(parent),
     ui(new Ui::CategorySelectWindow),
     canBeClosed(false)
 {
@@ -13,7 +13,7 @@ CategorySelectWindow::CategorySelectWindow(QWidget *parent) :
     repo->loadCategoriesFromDir("pics");
 
     viewCategoryDialog = QSharedPointer<ViewCategoryDialog>(new ViewCategoryDialog());
-    connect(this, SIGNAL(showCategory(Category::CategoryPtr)), viewCategoryDialog.data(), SLOT(onShowCategory(Category::CategoryPtr)));
+    connect(this, SIGNAL(showCategory(Category::CategoryPtr, bool)), viewCategoryDialog.data(), SLOT(onShowCategory(Category::CategoryPtr, bool)));
 }
 
 CategorySelectWindow::~CategorySelectWindow()
@@ -23,31 +23,45 @@ CategorySelectWindow::~CategorySelectWindow()
 
 void CategorySelectWindow::createCategorySelectors()
 {
-    QSize thumbnailSize(500,300);
+    QSize thumbnailSize(800,600);
     QVector<ClickableLabel*> labels;
+    const QFont font("MS Shell Dlg", 32);
     auto categories = CategoriesRepository::Instance()->listCategories();
-    foreach (Category::CategoryPtr category, categories) {
-        auto art = category->getArt();
-        auto artThumb = art->getImage(thumbnailSize);
+    if (categories.count() != 1) {
+        foreach (Category::CategoryPtr category, categories) {
+            auto art = category->getArt();
+            auto artThumb = art->getImage(thumbnailSize);
 
-        auto label = new ClickableLabel();
+            auto label = new ClickableLabel();
 
-        label->setPixmap(artThumb);
-        label->setAlignment(Qt::AlignCenter);
-        label->setScaledContents(false);
-        labels.push_back(label);
-        connect(label, SIGNAL(clicked(ClickableLabel*)), this, SLOT(onCategoryLabelClicked(ClickableLabel*)));
+            label->setPixmap(artThumb);
+            label->setAlignment(Qt::AlignCenter);
+            label->setScaledContents(false);
+            labels.push_back(label);
+            connect(label, SIGNAL(clicked(ClickableLabel*)), this, SLOT(onCategoryLabelClicked(ClickableLabel*)));
 
-        _labelToCategory.insert(label, category);
-    }
+            auto textLabel = new ClickableLabel();
+            textLabel->setAlignment(Qt::AlignCenter);
+            textLabel->setText(category->Name());
+            textLabel->setMaximumHeight(30);
+            textLabel->setFont(font);
+            labels.push_back(textLabel);
 
-    for(int i = 0; i != labels.size(); ++i) {
-        ui->gridLayout->addWidget(labels[i], i / 2, i % 2);
+            _labelToCategory.insert(label, category);
+            _labelToCategory.insert(textLabel, category);
+        }
+
+        for(int i = 0; i != labels.size(); ++i) {
+            ui->gridLayout->addWidget(labels[i], i, 0);
+        }
+    } else if (categories.count() == 1) {
+        emit showCategory(categories.first(), true);
+        this->hide();
     }
 }
 
 void CategorySelectWindow::onCategoryLabelClicked(ClickableLabel *sender)
 {
     qDebug() << "clicked label for category " << _labelToCategory[sender]->Name();
-    emit showCategory(_labelToCategory[sender]);
+    emit showCategory(_labelToCategory[sender], false);
 }

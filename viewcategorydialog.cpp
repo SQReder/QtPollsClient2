@@ -3,11 +3,13 @@
 #include "clicablelabel.h"
 #include <QDebug>
 #include <QScroller>
+#include <QCloseEvent>
 #include <clientconnection.h>
 
 ViewCategoryDialog::ViewCategoryDialog(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::ViewCategoryDialog)
+    QWidget(parent),
+    ui(new Ui::ViewCategoryDialog),
+    exitOnClose(false)
 {
     ui->setupUi(this);
     QScroller::grabGesture(ui->scrollArea, QScroller::LeftMouseButtonGesture);
@@ -23,11 +25,11 @@ ViewCategoryDialog::ViewCategoryDialog(QWidget *parent) :
 
     _voteDialog = QSharedPointer<VoteDialog>(new VoteDialog());
     QObject::connect(this, SIGNAL(showVoteDialog(CategoryImage::CategoryImagePtr)), _voteDialog.data(), SLOT(onShowVoteDialog(CategoryImage::CategoryImagePtr)));
+    QObject::connect(_voteDialog.data(), SIGNAL(ThisHides()), this, SLOT(OnVoteDialogClosed()));
 
     auto client = ClientConnection::Instance();
     ClientConnection *cl = client.data();
     QObject::connect(cl, SIGNAL(CodeVerified()), this, SLOT(onCodeVerified()));
-
 }
 
 ViewCategoryDialog::~ViewCategoryDialog()
@@ -35,11 +37,29 @@ ViewCategoryDialog::~ViewCategoryDialog()
     delete ui;
 }
 
-void ViewCategoryDialog::onShowCategory(Category::CategoryPtr category)
+void ViewCategoryDialog::closeEvent(QCloseEvent *event)
+{
+    if (exitOnClose) {
+//        event->accept();
+        QApplication::quit();
+    } else {
+        event->ignore();
+    }
+}
+
+void ViewCategoryDialog::onShowCategory(Category::CategoryPtr category, bool hideBackButton)
 {
     QSize thumbSize(500,400);
+    const QFont font("MS Shell Dlg", 24);
+
+    if (hideBackButton)
+        ui->pbBack->hide();
+    else
+        ui->pbBack->show();
+    exitOnClose = hideBackButton;
 
     _labels.clear();
+    _textLables.clear();
 
     auto images = category->listImages();
     for (auto item = images.begin(); item != images.end(); ++item) {
@@ -51,21 +71,36 @@ void ViewCategoryDialog::onShowCategory(Category::CategoryPtr category)
         label->setAlignment(Qt::AlignCenter);
         label->setScaledContents(false);
 
+        auto textLabel = QSharedPointer<ClickableLabel>(new ClickableLabel());
+        textLabel->setText(image->name());
+        textLabel->setMaximumHeight(25);
+        textLabel->setAlignment(Qt::AlignCenter);
+        textLabel->setFont(font);
+
+
         connect(label.data(), SIGNAL(clicked(ClickableLabel*)), this, SLOT(onImageLabelClicked(ClickableLabel*)));
 
         _labels.push_back(label);
+        _textLables.push_back(textLabel);
         _labelToImage.insert(label.data(), image);
     }
 
 
     const int itemsInRow = 2;
     for(int i = 0; i != _labels.size(); ++i) {
-        ui->scrollAreaGrid->addWidget(_labels[i].data(), i / itemsInRow, i % itemsInRow);
+        ui->scrollAreaGrid->addWidget(_labels[i].data(), i / itemsInRow * 2, i % itemsInRow);
+        ui->scrollAreaGrid->addWidget(_textLables[i].data(), i / itemsInRow * 2 + 1, i % itemsInRow);
     }
     ui->scrollArea->verticalScrollBar()->setValue(0);
 
-    this->showFullScreen();
+    this->show();
+    this->setWindowState(Qt::WindowFullScreen);
     this->raise();
+}
+
+void ViewCategoryDialog::OnVoteDialogClosed()
+{
+    this->showFullScreen();
 }
 
 void ViewCategoryDialog::showEvent(QShowEvent *)
@@ -74,7 +109,7 @@ void ViewCategoryDialog::showEvent(QShowEvent *)
     ui->verticalScrollBar->setMinimum(ui->scrollArea->verticalScrollBar()->minimum());
 }
 
-void ViewCategoryDialog::resizeEvent(QResizeEvent *e)
+void ViewCategoryDialog::resizeEvent(QResizeEvent *)
 {
     ui->verticalScrollBar->setMaximum(ui->scrollArea->verticalScrollBar()->maximum());
     ui->verticalScrollBar->setMinimum(ui->scrollArea->verticalScrollBar()->minimum());

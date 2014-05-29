@@ -32,6 +32,7 @@ public:
 
 public slots:
     void work();
+    void EndWork();
 
 signals:
     void finished();

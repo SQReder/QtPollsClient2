@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>VoteDialog</class>
- <widget class="QDialog" name="VoteDialog">
+ <widget class="QWidget" name="VoteDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>655</width>
-    <height>778</height>
+    <width>1543</width>
+    <height>799</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QDialog {
+   <string notr="true">QWidget#VoteDialog {
 	border-image:url(:/images/theme16x9);
 }</string>
   </property>
@@ -45,7 +45,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Подтвердите голос, поднеся QR код к красной черте</string>
+      <string>Подтвердите голос, поднеся QR код к камере</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -68,7 +68,7 @@
      </property>
      <property name="font">
       <font>
-       <pointsize>28</pointsize>
+       <pointsize>36</pointsize>
        <weight>75</weight>
        <bold>true</bold>
        <strikeout>false</strikeout>
@@ -115,7 +115,7 @@
      </property>
      <property name="font">
       <font>
-       <pointsize>20</pointsize>
+       <pointsize>24</pointsize>
       </font>
      </property>
      <property name="text">
