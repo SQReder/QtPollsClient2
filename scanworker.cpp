@@ -2,6 +2,7 @@
 #include <QDebug>
 #include <vector>
 #include <QMessageBox>
+#include <QMediaPlayer>
 #include <exception>
 
 #include <zxing/ZXing.h>
@@ -10,7 +11,7 @@
 #include <zxing/DecodeHints.h>
 #include <zxing/LuminanceSource.h>
 
-//#define SHOW_CV_WINDOW
+#define SHOW_CV_WINDOW
 
 using namespace std;
 using namespace zxing;
@@ -126,7 +127,15 @@ void ScanWorker::decodeImage() {
         Ref<Binarizer> binarizer(new GlobalHistogramBinarizer(source));
         Ref<BinaryBitmap> bitmap(new BinaryBitmap(binarizer));
         Ref<Result> result(reader.decode(bitmap, DecodeHints(DecodeHints::DEFAULT_HINT)));
+
         emit codeScanned(QString(result->getText()->getText().c_str()));
+
+        static auto player = new QMediaPlayer();
+        if (player->state() == QMediaPlayer::StoppedState) {
+            player->setMedia(QUrl::fromLocalFile("./button-3.mp3"));
+            player->setVolume(100);
+            player->play();
+        }
     }
     catch (zxing::Exception& e)
     {
