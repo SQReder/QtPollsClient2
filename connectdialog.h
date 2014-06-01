@@ -5,6 +5,7 @@
 #include <QMainWindow>
 #include <QTcpSocket>
 #include <QHostAddress>
+#include <QSharedPointer>
 
 #include "clientconnection.h"
 #include "scanworker.h"
@@ -30,9 +31,12 @@ private slots:
 
     void on_pbSelectFolder_clicked();
 
+signals:
+    void ShowCategorySelector();
+
 private:
     Ui::Dialog *ui;
-    CategorySelectWindow *_categorySelectWindow;
+    QSharedPointer<CategorySelectWindow> _categorySelectWindow;
 };
 
 extern QString picsPath;

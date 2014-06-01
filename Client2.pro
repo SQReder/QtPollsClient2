@@ -45,11 +45,11 @@ QMAKE_CXXFLAGS += #-O3
 
 
 LIBS += -L$$PWD/lib/ -lzxing
-LIBS += -Lc:\opencv\build\x86\mingw\lib
-LIBS += -lopencv_core249.dll -lopencv_highgui249.dll -lopencv_imgproc249.dll
+LIBS += -Lc:\cv\opencv\build\x86\mingw\lib
+LIBS += -lopencv_core247.dll -lopencv_highgui247.dll -lopencv_imgproc247.dll
 
 INCLUDEPATH += $$PWD/include
-INCLUDEPATH += C:\opencv\build\include
+INCLUDEPATH += C:\cv\opencv\build\include
 
 RESOURCES += \
     resources.qrc

@@ -28,6 +28,7 @@ public:
 protected:
 private slots:
     void onCategoryLabelClicked(ClickableLabel *sender);
+    void onShowCategorySelector();
 signals:
     void showCategory(Category::CategoryPtr, bool hideExitButton);
 private:

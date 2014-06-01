@@ -6,15 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1055</width>
-    <height>300</height>
+    <width>967</width>
+    <height>485</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QDialog {
+   <string notr="true">QWidget#CategorySelectWindow {
 	border-image:url(:/images/theme16x9);
 }</string>
   </property>

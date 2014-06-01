@@ -27,7 +27,11 @@ void CategorySelectWindow::createCategorySelectors()
     QVector<ClickableLabel*> labels;
     const QFont font("MS Shell Dlg", 32);
     auto categories = CategoriesRepository::Instance()->listCategories();
-    if (categories.count() != 1) {
+    if (categories.count() == 1) {
+            emit showCategory(categories.first(), true);
+            this->hide();
+    }
+    else {
         foreach (Category::CategoryPtr category, categories) {
             auto art = category->getArt();
             auto artThumb = art->getImage(thumbnailSize);
@@ -54,9 +58,6 @@ void CategorySelectWindow::createCategorySelectors()
         for(int i = 0; i != labels.size(); ++i) {
             ui->gridLayout->addWidget(labels[i], i, 0);
         }
-    } else if (categories.count() == 1) {
-        emit showCategory(categories.first(), true);
-        this->hide();
     }
 }
 
@@ -64,4 +65,13 @@ void CategorySelectWindow::onCategoryLabelClicked(ClickableLabel *sender)
 {
     qDebug() << "clicked label for category " << _labelToCategory[sender]->Name();
     emit showCategory(_labelToCategory[sender], false);
+}
+
+void CategorySelectWindow::onShowCategorySelector()
+{
+    createCategorySelectors();
+
+    this->show();
+    this->setWindowState(Qt::WindowFullScreen);
+    this->raise();
 }

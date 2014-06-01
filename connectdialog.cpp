@@ -20,6 +20,9 @@ ConnectDialog::ConnectDialog(QWidget *parent) :
     auto _client = ClientConnection::Instance();
     connect(_client.data(), SIGNAL(AuthSuccess()), this, SLOT(onAuthSuccess()));
 
+    _categorySelectWindow = QSharedPointer<CategorySelectWindow>(new CategorySelectWindow());
+    connect(this,SIGNAL(ShowCategorySelector()), _categorySelectWindow.data(), SLOT(onShowCategorySelector()));
+
     Logger::assignList(ui->lwLog);
 }
 
@@ -53,15 +56,7 @@ void ConnectDialog::onAuthSuccess() {
     try {
         CreateScannerWorkerThread();
 
-        _categorySelectWindow = new CategorySelectWindow(this);
-        _categorySelectWindow->createCategorySelectors();
-
-        _categorySelectWindow->show();
-        qDebug() << _categorySelectWindow->pos() << _categorySelectWindow->size();
-
-        _categorySelectWindow->raise();
-        _categorySelectWindow->showFullScreen();
-
+        emit ShowCategorySelector();
         this->hide();
     } catch (std::exception &e){
         Logger::error(QString(e.what()));

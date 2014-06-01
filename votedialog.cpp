@@ -27,11 +27,14 @@ VoteDialog::~VoteDialog()
 
 void VoteDialog::ShowStatus()
 {
+    ui->graphics->hide();
+    ui->lblTitle->hide();
+
     switch(status) {
     case vsAccepted:
         ui->lblVoteStatus->setText("<html><head/><body><p style=\"color:#008000;\">Спасибо, Ваш голос принят</p></body></html>");
-        ui->graphics->hide();
         ui->pbBack->hide();
+        ui->label->hide();
         break;
     case vsCodeUSed:
         ui->lblVoteStatus->setText("<html><head/><body><p style=\" font-weight:600; color:#bf0000;\">Этот код уже использован для голосования в этой категории</p></body></html>");
@@ -58,6 +61,8 @@ void VoteDialog::onTimerStop()
     ui->lblVoteStatus->hide();
     ui->graphics->show();
     ui->pbBack->show();
+    ui->lblTitle->show();
+    ui->label->show();
 
     if (status == vsAccepted) {
         emit ThisHides();
@@ -110,14 +115,14 @@ void VoteDialog::onCodeVerified()
 void VoteDialog::onCodeAlreadyUsed()
 {
     _waitForCode = true;
-    status = vsCodeUSed;
+    status = VoteStatus::vsCodeUSed;
     ShowStatus();
 }
 
 void VoteDialog::onWrongCode()
 {
     _waitForCode = true;
-    status = vsWrong;
+    status = VoteStatus::vsWrong;
     ShowStatus();
 }
 

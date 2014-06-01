@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1543</width>
-    <height>799</height>
+    <width>666</width>
+    <height>807</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -41,7 +41,7 @@
      </property>
      <property name="font">
       <font>
-       <pointsize>20</pointsize>
+       <pointsize>28</pointsize>
       </font>
      </property>
      <property name="text">
@@ -60,15 +60,9 @@
    </item>
    <item>
     <widget class="QLabel" name="lblVoteStatus">
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>50</height>
-      </size>
-     </property>
      <property name="font">
       <font>
-       <pointsize>36</pointsize>
+       <pointsize>54</pointsize>
        <weight>75</weight>
        <bold>true</bold>
        <strikeout>false</strikeout>
@@ -81,8 +75,14 @@
      <property name="textFormat">
       <enum>Qt::RichText</enum>
      </property>
+     <property name="scaledContents">
+      <bool>false</bool>
+     </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
